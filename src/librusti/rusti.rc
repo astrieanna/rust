@@ -29,7 +29,7 @@ extern mod rustc(vers = "0.7-pre");
 extern mod syntax(vers = "0.7-pre");
 
 use core::*;
-use core::io::{ReaderUtil, WriterUtil};
+use core::io::{ReaderUtil, WriterUtil, print};
 use rustc::driver::{driver, session};
 use syntax::{ast, diagnostic};
 use syntax::ast_util::*;
@@ -125,7 +125,15 @@ fn record(repl: Repl, blk: @ast::blk, intr: @token::ident_interner) -> Repl {
 
 #[test]
 fn test_run1() {
-  print("ran test1");
+    let mut repl = Repl {
+        prompt: ~"rusti> ",
+        binary: ~"rusti",//args[0],
+        running: true,
+        view_items: ~"",
+        lib_search_paths: ~[],
+        stmts: ~""
+    };
+    run(repl, ~"print(\"hello\n\");");
 }
 
 /// Run an input string in a Repl, returning the new Repl.
@@ -159,7 +167,7 @@ fn run(repl: Repl, input: ~str) -> Repl {
     let (crate, _) = driver::compile_upto(sess, cfg, wrapped,
                                                  driver::cu_everything,
                                                  Some(outputs));
-
+    debug!("back from compile_upto");
     let mut opt = None;
 
     for crate.node.module.items.each |item| {
