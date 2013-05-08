@@ -123,6 +123,11 @@ fn record(repl: Repl, blk: @ast::blk, intr: @token::ident_interner) -> Repl {
     }
 }
 
+#[test]
+fn test_run1() {
+  print("ran test1");
+}
+
 /// Run an input string in a Repl, returning the new Repl.
 fn run(repl: Repl, input: ~str) -> Repl {
     let options = @session::options {
